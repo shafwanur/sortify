@@ -18,7 +18,14 @@ function formatFollowerCount(followerCount: number) {
 export default function DropdownCard({ img, artistName, spotifyUri, followerCount }: DropDownCardType) {
   const navigate = useNavigate();
   function handleClick() {
-    navigate("/artist");
+    navigate("/artist", {
+      "state": {
+        img: img,
+        followerCount: formatFollowerCount(followerCount),
+        artistName: artistName,
+        spotifyUri: spotifyUri
+      }
+    });
   }
   return (
     <div className="pl-4 relative" onClick={handleClick}>
