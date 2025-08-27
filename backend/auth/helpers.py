@@ -81,7 +81,14 @@ async def get_current_user(token: str = Depends(oauth2_scheme)) -> User:
     except InvalidTokenError:
         raise credentials_exception
     
-    return User(spotify_user_id=spotify_user_id)
+    # retrieve refresh_token from the database
+    async with get_session() as session:
+        user = await session.get(User, spotify_user_id)
+
+        if user is None or user.refresh_token is None: 
+            raise credentials_exception # TODO: change to something more meaningful 
+    
+        return User(spotify_user_id=spotify_user_id, refresh_token=user.refresh_token)
 
 async def db_update(spotify_user_id: str, refresh_token: str):
     '''

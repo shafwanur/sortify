@@ -6,4 +6,5 @@ class Token(BaseModel):
     token_type: str
 
 class User(BaseModel):
-    spotify_user_id: str | None = None
+    spotify_user_id: str
+    refresh_token: str

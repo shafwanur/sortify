@@ -34,8 +34,8 @@ REDIRECT_URI = f"{BACKEND_ENDPOINT}/auth/success"
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 
-@router.get("/login") # TODO: maybe change to post later. 
-async def spotify_login_for_access_token():
+@router.get("/login") 
+async def spotify_login():
     """Go through spotify's login process, get user_id, tokenize, return token. """
     state = generate_random_string(16)
     scope = get_scopes()
@@ -57,20 +57,18 @@ async def auth_callback(request: Request) -> Token:
     if not auth_code:
         return JSONResponse({"error": "No auth_code returned"}, status_code=400)
 
-    # from auth_code, make refresh_token and access_token and spotify_user_id.
-    # tokenize the spotify_user_id and send over. TODO: and the refresh token too? 
     refresh_token = create_refresh_token(auth_code=auth_code)
     access_token = create_access_token(refresh_token=refresh_token)
     spotify_user_id = create_spotify_user_id(access_token=access_token)
 
-    # Store spotify_user_id and refresh_token in the database. In case it exists, just update it.
+    # Update spotify_user_id and refresh_token in the database.
     await db_update(spotify_user_id, refresh_token)
 
-    # BIG TODO: change later. currently sending the access_token instead of the jwt token. 
+    # send over the spotify_user_id as a jwt token. access_token and refresh_tokens shall be retrieved from a different api call later. 
     jwt_token = create_jwt_token(
         data={"sub": spotify_user_id}
     )
-    return Token(jwt_token=access_token, token_type="bearer")
+    return Token(jwt_token=jwt_token, token_type="bearer")
 
 @router.get("/validate")
 async def read_users_me(current_user: User = Depends(get_current_user)) -> User:
