@@ -68,7 +68,14 @@ async def auth_callback(request: Request) -> Token:
     jwt_token = create_jwt_token(
         data={"sub": spotify_user_id}
     )
-    return Token(jwt_token=jwt_token, token_type="bearer")
+
+    # Send user back to frontend with token in query string
+    frontend_url = f"http://localhost:5173/auth/callback?jwt_token={jwt_token}"
+    return RedirectResponse(frontend_url)
+
+    # idealerweise this should run, but temporary fix: sending the token as a param to the frontend. 
+    # TODO: replace with HTTP Cookie for post/prod version.
+    # return Token(jwt_token=jwt_token, token_type="bearer")
 
 @router.get("/validate")
 async def read_users_me(current_user: User = Depends(get_current_user)) -> User:
