@@ -1,11 +1,22 @@
-import { Button } from "@/components/ui/button"
+import LoginPage from "@/pages/Login"
+import NoPage from "@/pages/NoPage";
+import Layout from "@/pages/Layout";
+import Search from "@/pages/Search";
+import Artist from "./pages/Artist";
 
-function App() {
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+export default function App() {
   return (
-    <div className="flex min-h-svh flex-col items-center justify-center">
-      <Button>Click me</Button>
-    </div>
-  )
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<LoginPage />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/artist" element={<Artist />} />
+          <Route path="*" element={<NoPage />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
 }
-
-export default App
