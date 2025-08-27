@@ -66,10 +66,11 @@ async def auth_callback(request: Request) -> Token:
     # Store spotify_user_id and refresh_token in the database. In case it exists, just update it.
     await db_update(spotify_user_id, refresh_token)
 
-    access_token = create_jwt_token(
+    # BIG TODO: change later. currently sending the access_token instead of the jwt token. 
+    jwt_token = create_jwt_token(
         data={"sub": spotify_user_id}
     )
-    return Token(access_token=access_token, token_type="bearer")
+    return Token(jwt_token=access_token, token_type="bearer")
 
 @router.get("/validate")
 async def read_users_me(current_user: User = Depends(get_current_user)) -> User:
