@@ -8,13 +8,16 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"form">) {
+  function handleClick() {
+    window.location.href = "http://localhost:8000/auth/login"
+  }
   return (
     <form className={cn("flex flex-col gap-6", className)} {...props}>
       <div className="flex flex-col items-center gap-2 text-center">
         <h1 className="text-2xl font-bold">Welcome!</h1>
       </div>
       <div className="grid gap-6">
-        <Button variant="outline" className="w-full">
+        <Button variant="outline" className="w-full" onClick={handleClick}>
           <img src={spotify} className="size-7"/>
           {/* <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
             <path
