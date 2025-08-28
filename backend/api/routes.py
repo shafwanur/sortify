@@ -79,7 +79,7 @@ def populate_playlist(payload: RemoveTracksRequest, access_token: str = Header(.
 
 
 @router.get("/artists")
-def search_artist(payload: ArtistSearchRequest, access_token: str = Header(...)):
+def search_artist(artist_name: str, access_token: str = Header(...)):
     """
     Searches artist by name
     """
@@ -87,7 +87,7 @@ def search_artist(payload: ArtistSearchRequest, access_token: str = Header(...))
     headers = {
         "Authorization": f"Bearer {access_token}",
     }
-    params = {"q": payload.artist_name, "type": "artist", "limit": 5}
+    params = {"q": artist_name, "type": "artist", "limit": 5}
     response = requests.get(url=url, headers=headers, params=params)
     return {
         "status_code": response.status_code,

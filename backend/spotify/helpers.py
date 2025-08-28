@@ -34,11 +34,11 @@ def get_cached_access_token(spotify_user_id: int) -> str | None:
     return None
 
 
-def create_access_token(refresh_token: str):
+def create_access_token(payload: AccessTokenRequest):
     url = f"{SPOTIFY_ENDPOINT}/api/token"
     data = {
         "grant_type": "refresh_token",
-        "refresh_token": refresh_token
+        "refresh_token": payload.refresh_token
     }
     cred = f"{CLIENT_ID}:{CLIENT_SECRET}"
     cred_b64 = base64.b64encode(cred.encode())
@@ -46,7 +46,11 @@ def create_access_token(refresh_token: str):
     response = requests.post(url=url, data=data, headers=headers)
     access_token = response.json().get("access_token")
 
-    # cache_access_token(spotify_user_id=payload.spotify_user_id, access_token=access_token)
+    spotify_user_id = payload.spotify_user_id
+    if spotify_user_id is None: 
+        spotify_user_id = create_spotify_user_id(access_token=access_token)
+
+    cache_access_token(spotify_user_id=spotify_user_id, access_token=access_token)
     return access_token
 
 def create_spotify_user_id(access_token: str):
