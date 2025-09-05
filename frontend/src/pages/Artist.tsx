@@ -26,11 +26,15 @@ import { useLocation } from "react-router-dom";
 export default function CardDemo() {
   const location = useLocation();
   const {img, artistName, spotifyUri, followerCount} = location.state || {};
-  console.log(artistName, spotifyUri);
 
   const [position, setPosition] = React.useState("Sort Type")
 
-  return (
+  function handleClick() {
+    console.log(position);
+    // TODO: create backend endpoint to actually call this. 
+  }
+
+  return ( 
     <div className="flex justify-center">
       <Card className="w-full max-w-sm mt-5">
           <img src={img} className="w-full pl-4 pr-4"/>
@@ -57,7 +61,7 @@ export default function CardDemo() {
           </CardAction>
         </CardHeader>
         <CardFooter className="flex-col gap-2">
-          <Button variant="outline" className="w-full">
+          <Button variant="outline" className="w-full" onClick={handleClick}>
             Sort
           </Button>
         </CardFooter>
