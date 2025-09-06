@@ -1,4 +1,6 @@
-from main import song_list
+import requests
+
+from . import globalvars
 
 def track_info(track_id: str, access_token: str):
     '''
@@ -26,7 +28,7 @@ def track_info(track_id: str, access_token: str):
 
 def push_album_tracks(album_id: str, access_token: str):
     '''
-    Push all tracks in an album to the song_list list.
+    Push all tracks in an album to the globalvars.song_list list.
     '''
     
     url = f'https://api.spotify.com/v1/albums/{album_id}/tracks'
@@ -38,5 +40,5 @@ def push_album_tracks(album_id: str, access_token: str):
     }
     response = requests.get(url = url, headers = headers, params = params)
     for item in response.json()['items']:
-        p = track_info(track_id = item['id'])
-        song_list.append(p) # TODO
+        p = track_info(track_id = item['id'], access_token=access_token)
+        globalvars.song_list.append(p) # TODO

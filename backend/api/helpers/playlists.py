@@ -1,3 +1,6 @@
+import json 
+import requests
+
 def create_playlist(spotify_user_id: str, playlist_name: str, access_token: str):
     """
     Create a new playlist with a given name".
@@ -7,7 +10,7 @@ def create_playlist(spotify_user_id: str, playlist_name: str, access_token: str)
         {
             "name": playlist_name,
             "public": True,
-            "description": "Created by https://github.com/shafwanur/spotify-track-sorter",
+            "description": "Created by https://github.com/shafwanur/sortify",
         }
     )
     headers = {
@@ -20,7 +23,7 @@ def create_playlist(spotify_user_id: str, playlist_name: str, access_token: str)
 
     return playlist_id
 
-def add_track_to_playlist(playlist_id: str, uris: list):
+def add_track_to_playlist(playlist_id: str, uris: list, access_token: str):
     '''
     Add tracks (uris) to the specified playlist of playlist_id.
     '''

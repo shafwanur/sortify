@@ -1,0 +1,44 @@
+{'uri': 'spotify:track:5bRqdjdVRfd1zOY1xesNgu', 'track_name': 'Echo', 'popularity': 57, 'album_name': 'Echo', 'album_type': 'single', 'release_date': '2022-09-23'}
+{'uri': 'spotify:track:1Yj9IP75nNp6JntNYOxrzH', 'track_name': 'Achilles', 'popularity': 61, 'album_name': 'Achilles', 'album_type': 'single', 'release_date': '2023-03-30'}
+{'uri': 'spotify:track:2eSVBLVTz9ng1a6jfkPQDm', 'track_name': 'Einmal verliebt (Intro)', 'popularity': 47, 'album_name': 'ROTE FLAGGEN', 'album_type': 'single', 'release_date': '2023-05-25'}
+{'uri': 'spotify:track:7bkUa9kDFGxgCC7d36dzFI', 'track_name': 'Rote Flaggen', 'popularity': 68, 'album_name': 'ROTE FLAGGEN', 'album_type': 'single', 'release_date': '2023-05-25'}
+{'uri': 'spotify:track:6TCxWdIkCnZN4gWvXd6cqK', 'track_name': '2 Minuten', 'popularity': 58, 'album_name': 'ROTE FLAGGEN', 'album_type': 'single', 'release_date': '2023-05-25'}
+{'uri': 'spotify:track:5jADtrXb3KgF9zqt4tuZqO', 'track_name': 'Tourrettes', 'popularity': 55, 'album_name': 'Tourrettes', 'album_type': 'single', 'release_date': '2023-09-14'}
+{'uri': 'spotify:track:5SyMIueLnvZ7dQNGWcU3Wf', 'track_name': 'Rote Flaggen (feat. RTO)', 'popularity': 45, 'album_name': 'Rote Flaggen (feat. RTO)', 'album_type': 'single', 'release_date': '2023-11-18'}
+{'uri': 'spotify:track:4P3DSLxQLg0il3pEBKsPTJ', 'track_name': 'Wenn du weinst', 'popularity': 61, 'album_name': 'Wenn du weinst / Einmal verliebt (Outro)', 'album_type': 'single', 'release_date': '2023-11-30'}
+{'uri': 'spotify:track:2Ibp8UUZFcS6dnUXHR4ZIO', 'track_name': 'Einmal verliebt (Outro)', 'popularity': 54, 'album_name': 'Wenn du weinst / Einmal verliebt (Outro)', 'album_type': 'single', 'release_date': '2023-11-30'}
+{'uri': 'spotify:track:6nEigFDrOeqU0bDJbg51jJ', 'track_name': 'HEIMWEG', 'popularity': 52, 'album_name': 'berq', 'album_type': 'album', 'release_date': '2024-10-24'}
+{'uri': 'spotify:track:3VNQ3hvh3m59RKIjYD6B2U', 'track_name': 'STILL', 'popularity': 57, 'album_name': 'berq', 'album_type': 'album', 'release_date': '2024-10-24'}
+{'uri': 'spotify:track:4rORA6wy5y0Kn0uvmV2a1V', 'track_name': 'Träumen', 'popularity': 47, 'album_name': 'berq', 'album_type': 'album', 'release_date': '2024-10-24'}
+{'uri': 'spotify:track:1c7usoqJL4tjHyh1XwoIsD', 'track_name': 'Mein Hass tritt dir die Haustür ein', 'popularity': 53, 'album_name': 'berq', 'album_type': 'album', 'release_date': '2024-10-24'}
+{'uri': 'spotify:track:5nNZ1qZcDLe1UuXgdVnZ5Q', 'track_name': 'Licht geht aus', 'popularity': 47, 'album_name': 'berq', 'album_type': 'album', 'release_date': '2024-10-24'}
+{'uri': 'spotify:track:3cNJmuEwsZpEfFj10wcvpz', 'track_name': 'Vergissmeinnicht', 'popularity': 54, 'album_name': 'berq', 'album_type': 'album', 'release_date': '2024-10-24'}
+{'uri': 'spotify:track:6Vx7ZtJO53z7ElrL7aMx3e', 'track_name': 'Im Wind (Interlude)', 'popularity': 40, 'album_name': 'berq', 'album_type': 'album', 'release_date': '2024-10-24'}
+{'uri': 'spotify:track:3aeRQ9xGSLAUg1R7CZ5QKv', 'track_name': 'Blauer Ballon', 'popularity': 52, 'album_name': 'berq', 'album_type': 'album', 'release_date': '2024-10-24'}
+{'uri': 'spotify:track:4pnS7YjhXuC3XL9FpwIisq', 'track_name': 'Alleine', 'popularity': 53, 'album_name': 'berq', 'album_type': 'album', 'release_date': '2024-10-24'}
+{'uri': 'spotify:track:1yB1VJZ6gh8qsPMacpriWF', 'track_name': 'SCHLEIERKRAUT', 'popularity': 53, 'album_name': 'berq', 'album_type': 'album', 'release_date': '2024-10-24'}
+{'uri': 'spotify:track:3Vw4SxsPsVwG4xwK3Il0mP', 'track_name': 'PIROUETTEN', 'popularity': 58, 'album_name': 'berq', 'album_type': 'album', 'release_date': '2024-10-24'}
+{'uri': 'spotify:track:7bnESRPXP65vFIJvAmkuwS', 'track_name': 'berq (outro)', 'popularity': 42, 'album_name': 'berq', 'album_type': 'album', 'release_date': '2024-10-24'}
+{'uri': 'spotify:track:1IHNkIUoug6QBUuyyJj2sl', 'track_name': 'HEIMWEG - A COLORS SHOW', 'popularity': 40, 'album_name': 'HEIMWEG - A COLORS SHOW', 'album_type': 'single', 'release_date': '2025-01-30'}
+{'uri': 'spotify:track:5bRqdjdVRfd1zOY1xesNgu', 'track_name': 'Echo', 'popularity': 57, 'album_name': 'Echo', 'album_type': 'single', 'release_date': '2022-09-23'}
+{'uri': 'spotify:track:1Yj9IP75nNp6JntNYOxrzH', 'track_name': 'Achilles', 'popularity': 61, 'album_name': 'Achilles', 'album_type': 'single', 'release_date': '2023-03-30'}
+{'uri': 'spotify:track:2eSVBLVTz9ng1a6jfkPQDm', 'track_name': 'Einmal verliebt (Intro)', 'popularity': 47, 'album_name': 'ROTE FLAGGEN', 'album_type': 'single', 'release_date': '2023-05-25'}
+{'uri': 'spotify:track:7bkUa9kDFGxgCC7d36dzFI', 'track_name': 'Rote Flaggen', 'popularity': 68, 'album_name': 'ROTE FLAGGEN', 'album_type': 'single', 'release_date': '2023-05-25'}
+{'uri': 'spotify:track:6TCxWdIkCnZN4gWvXd6cqK', 'track_name': '2 Minuten', 'popularity': 58, 'album_name': 'ROTE FLAGGEN', 'album_type': 'single', 'release_date': '2023-05-25'}
+{'uri': 'spotify:track:5jADtrXb3KgF9zqt4tuZqO', 'track_name': 'Tourrettes', 'popularity': 55, 'album_name': 'Tourrettes', 'album_type': 'single', 'release_date': '2023-09-14'}
+{'uri': 'spotify:track:5SyMIueLnvZ7dQNGWcU3Wf', 'track_name': 'Rote Flaggen (feat. RTO)', 'popularity': 45, 'album_name': 'Rote Flaggen (feat. RTO)', 'album_type': 'single', 'release_date': '2023-11-18'}
+{'uri': 'spotify:track:4P3DSLxQLg0il3pEBKsPTJ', 'track_name': 'Wenn du weinst', 'popularity': 61, 'album_name': 'Wenn du weinst / Einmal verliebt (Outro)', 'album_type': 'single', 'release_date': '2023-11-30'}
+{'uri': 'spotify:track:2Ibp8UUZFcS6dnUXHR4ZIO', 'track_name': 'Einmal verliebt (Outro)', 'popularity': 54, 'album_name': 'Wenn du weinst / Einmal verliebt (Outro)', 'album_type': 'single', 'release_date': '2023-11-30'}
+{'uri': 'spotify:track:6nEigFDrOeqU0bDJbg51jJ', 'track_name': 'HEIMWEG', 'popularity': 52, 'album_name': 'berq', 'album_type': 'album', 'release_date': '2024-10-24'}
+{'uri': 'spotify:track:3VNQ3hvh3m59RKIjYD6B2U', 'track_name': 'STILL', 'popularity': 57, 'album_name': 'berq', 'album_type': 'album', 'release_date': '2024-10-24'}
+{'uri': 'spotify:track:4rORA6wy5y0Kn0uvmV2a1V', 'track_name': 'Träumen', 'popularity': 47, 'album_name': 'berq', 'album_type': 'album', 'release_date': '2024-10-24'}
+{'uri': 'spotify:track:1c7usoqJL4tjHyh1XwoIsD', 'track_name': 'Mein Hass tritt dir die Haustür ein', 'popularity': 53, 'album_name': 'berq', 'album_type': 'album', 'release_date': '2024-10-24'}
+{'uri': 'spotify:track:5nNZ1qZcDLe1UuXgdVnZ5Q', 'track_name': 'Licht geht aus', 'popularity': 47, 'album_name': 'berq', 'album_type': 'album', 'release_date': '2024-10-24'}
+{'uri': 'spotify:track:3cNJmuEwsZpEfFj10wcvpz', 'track_name': 'Vergissmeinnicht', 'popularity': 54, 'album_name': 'berq', 'album_type': 'album', 'release_date': '2024-10-24'}
+{'uri': 'spotify:track:6Vx7ZtJO53z7ElrL7aMx3e', 'track_name': 'Im Wind (Interlude)', 'popularity': 40, 'album_name': 'berq', 'album_type': 'album', 'release_date': '2024-10-24'}
+{'uri': 'spotify:track:3aeRQ9xGSLAUg1R7CZ5QKv', 'track_name': 'Blauer Ballon', 'popularity': 52, 'album_name': 'berq', 'album_type': 'album', 'release_date': '2024-10-24'}
+{'uri': 'spotify:track:4pnS7YjhXuC3XL9FpwIisq', 'track_name': 'Alleine', 'popularity': 53, 'album_name': 'berq', 'album_type': 'album', 'release_date': '2024-10-24'}
+{'uri': 'spotify:track:1yB1VJZ6gh8qsPMacpriWF', 'track_name': 'SCHLEIERKRAUT', 'popularity': 53, 'album_name': 'berq', 'album_type': 'album', 'release_date': '2024-10-24'}
+{'uri': 'spotify:track:3Vw4SxsPsVwG4xwK3Il0mP', 'track_name': 'PIROUETTEN', 'popularity': 58, 'album_name': 'berq', 'album_type': 'album', 'release_date': '2024-10-24'}
+{'uri': 'spotify:track:7bnESRPXP65vFIJvAmkuwS', 'track_name': 'berq (outro)', 'popularity': 42, 'album_name': 'berq', 'album_type': 'album', 'release_date': '2024-10-24'}
+{'uri': 'spotify:track:1IHNkIUoug6QBUuyyJj2sl', 'track_name': 'HEIMWEG - A COLORS SHOW', 'popularity': 40, 'album_name': 'HEIMWEG - A COLORS SHOW', 'album_type': 'single', 'release_date': '2025-01-30'}

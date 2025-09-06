@@ -5,7 +5,10 @@ from fastapi import APIRouter, Header
 
 from api.models import (
     ArtistSearchRequest,
+    SortRequest
 )
+
+from api.helpers.main import main
 
 router = APIRouter(prefix="/api", tags=["api"])
 
@@ -26,3 +29,11 @@ def search_artist(artist_name: str, access_token: str = Header(...)):
         "msg": response.json(),  # TODO: images from here will be useful later on, returning entire json for now.
     }
 
+@router.post("/sort")
+def call_main(payload: SortRequest, access_token: str = Header(...)):
+    main(artist_name=payload.artist_name, artist_id=payload.artist_id, arg=payload.arg, spotify_user_id=payload.spotify_user_id, access_token=access_token)
+
+    return {
+        "status_code": 200,
+        "msg": "Success in Sorting!"
+    }
