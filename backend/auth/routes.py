@@ -28,12 +28,13 @@ from spotify.helpers import (
 
 
 load_dotenv()
-BACKEND_ENDPOINT = os.getenv("BACKEND_ENDPOINT")
+FRONTEND_ENDPOINT = os.getenv("FRONTEND_ENDPOINT")
+BACKEND_API_ENDPOINT = os.getenv("BACKEND_API_ENDPOINT")
 SPOTIFY_ENDPOINT = "https://accounts.spotify.com"
 
 CLIENT_ID = os.getenv("CLIENT_ID")
 CLIENT_SECRET = os.getenv("CLIENT_SECRET")
-REDIRECT_URI = f"{BACKEND_ENDPOINT}/auth/success"
+REDIRECT_URI = f"{BACKEND_API_ENDPOINT}/auth/success"
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -74,7 +75,7 @@ async def auth_callback(request: Request) -> Token:
     )
 
     # Send user back to frontend with token in query string
-    frontend_url = f"http://localhost:5173/auth/callback?jwt_token={jwt_token}"
+    frontend_url = f"{FRONTEND_ENDPOINT}/auth/callback?jwt_token={jwt_token}"
     return RedirectResponse(frontend_url)
 
     # idealerweise this should run, but temporary fix: sending the token as a param to the frontend. 

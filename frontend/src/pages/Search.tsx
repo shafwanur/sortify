@@ -15,18 +15,18 @@ export default function Search() {
 
     await new Promise(resolve => setTimeout(resolve, 1000)); // 5s wait for user to stop typing. stupid solution, i know. give me a break. TODO: fix later.  
     console.log(e.target.value);
-    
+    const VITE_BACKEND_API_ENDPOINT = import.meta.env.VITE_BACKEND_API_ENDPOINT;
     const jwt_token = localStorage.getItem("jwt_token");
     
     const validate_response = await axios({
       method: 'get',
-      url: 'http://localhost:8000/auth/validate',
+      url: `${VITE_BACKEND_API_ENDPOINT}/auth/validate`,
       headers: {
         "Authorization": `Bearer ${jwt_token}`
       }
     });
     
-    const access_token_response = await axios.post('http://localhost:8000/spotify/token/access', {
+    const access_token_response = await axios.post(`${VITE_BACKEND_API_ENDPOINT}/spotify/token/access`, {
         spotify_user_id: validate_response.data.spotify_user_id,
         refresh_token: validate_response.data.refresh_token
       }
@@ -37,10 +37,9 @@ export default function Search() {
     console.log(access_token);
     console.log({ artist_name: e.target.value });
 
-
     const search_response = await axios({
       method: 'get',
-      url: 'http://localhost:8000/api/artists',
+      url: `${VITE_BACKEND_API_ENDPOINT}/api/artists`,
       params: {
         artist_name: e.target.value
       },

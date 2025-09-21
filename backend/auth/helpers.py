@@ -15,12 +15,12 @@ from auth.models import User
 from db.models import User
 
 load_dotenv()
-BACKEND_ENDPOINT = os.getenv("BACKEND_ENDPOINT")
+BACKEND_API_ENDPOINT = os.getenv("BACKEND_API_ENDPOINT")
 SPOTIFY_ENDPOINT = "https://accounts.spotify.com"
 
 CLIENT_ID = os.getenv("CLIENT_ID")
 CLIENT_SECRET = os.getenv("CLIENT_SECRET")
-REDIRECT_URI = f"{BACKEND_ENDPOINT}/auth/success"
+REDIRECT_URI = f"{BACKEND_API_ENDPOINT}/auth/success"
 
 ACCESS_TOKEN_EXPIRE_MINUTES = 120
 ALGORITHM = os.getenv("ALGORITHM")

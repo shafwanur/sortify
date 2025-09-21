@@ -12,12 +12,12 @@ from spotify.helpers import (
 
 load_dotenv()
 
-BACKEND_ENDPOINT = os.getenv("BACKEND_ENDPOINT")
+BACKEND_API_ENDPOINT = os.getenv("BACKEND_API_ENDPOINT")
 SPOTIFY_ENDPOINT = "https://accounts.spotify.com"
 
 CLIENT_ID = os.getenv("CLIENT_ID")
 CLIENT_SECRET = os.getenv("CLIENT_SECRET")
-REDIRECT_URI = f"{BACKEND_ENDPOINT}/spotify/success"
+REDIRECT_URI = f"{BACKEND_API_ENDPOINT}/spotify/success"
 
 router = APIRouter(prefix="/spotify", tags=["spotify"])
 

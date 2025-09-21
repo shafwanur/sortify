@@ -9,7 +9,8 @@ export function LoginForm({
   ...props
 }: React.ComponentProps<"form">) {
   function handleClick() {
-    window.location.href = "http://localhost:8000/auth/login"
+    const VITE_BACKEND_API_ENDPOINT = import.meta.env.VITE_BACKEND_API_ENDPOINT;
+    window.location.href = `${VITE_BACKEND_API_ENDPOINT}/auth/login`
   }
   return (
     <form className={cn("flex flex-col gap-6", className)} {...props}>
