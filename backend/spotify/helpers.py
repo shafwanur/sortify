@@ -35,6 +35,7 @@ def get_cached_access_token(spotify_user_id: int) -> str | None:
 
 
 def create_access_token(payload: AccessTokenRequest):
+    print("FUCK: func has been called")
     url = f"{SPOTIFY_ENDPOINT}/api/token"
     data = {
         "grant_type": "refresh_token",
@@ -48,17 +49,45 @@ def create_access_token(payload: AccessTokenRequest):
 
     spotify_user_id = payload.spotify_user_id
     if spotify_user_id is None: 
+        print("FUCK: user id is not there.", access_token)
         spotify_user_id = create_spotify_user_id(access_token=access_token)
 
     cache_access_token(spotify_user_id=spotify_user_id, access_token=access_token)
     return access_token
 
+# def create_spotify_user_id(access_token: str):
+#     print("FUCKK, ", access_token)
+#     url = f"https://api.spotify.com/v1/me"
+#     headers = {"Authorization": "Bearer " + access_token}
+#     response = requests.get(url, headers=headers)  # TODO: add some error handling
+#     print("FUCKK, ", response.json())
+#     spotify_user_id = response.json().get("id")
+#     return spotify_user_id
+
 def create_spotify_user_id(access_token: str):
-    url = f"https://api.spotify.com/v1/me"
+    # This is the correct Spotify API endpoint for the current user's profile
+    url = "https://api.spotify.com/v1/me"
     headers = {"Authorization": "Bearer " + access_token}
-    response = requests.get(url, headers=headers)  # TODO: add some error handling
-    spotify_user_id = response.json().get("id")
-    return spotify_user_id
+    
+    response = requests.get(url, headers=headers)
+
+    # --- Proper error handling ---
+    # First, check if the request was successful (status code 200)
+    if response.status_code == 200:
+        try:
+            # Now it's safe to parse the JSON and get the ID
+            spotify_user_id = response.json().get("id")
+            print(f"Successfully retrieved Spotify User ID: {spotify_user_id}")
+            return spotify_user_id
+        except requests.exceptions.JSONDecodeError:
+            # This handles rare cases where the server gives a 200 status but invalid JSON
+            print("Error: Response was not valid JSON.")
+            return None
+    else:
+        # If the request failed, print the status code and error message from Spotify
+        print(f"Error: Failed to get user ID. Status code: {response.status_code}")
+        print(f"Response: {response.text}")
+        return None
 
 def create_refresh_token(auth_code: str):
     # Exchange auth_code immediately for refresh_token

@@ -63,8 +63,11 @@ async def auth_callback(request: Request) -> Token:
         return JSONResponse({"error": "No auth_code returned"}, status_code=400)
 
     refresh_token = create_refresh_token(auth_code=auth_code)
+    print(f"{refresh_token=}")
     access_token = create_access_token(payload=AccessTokenRequest(refresh_token=refresh_token))
+    print(f"{access_token=}")
     spotify_user_id = create_spotify_user_id(access_token=access_token)
+    print(f"{spotify_user_id=}")
 
     # Update spotify_user_id and refresh_token in the database.
     await db_update(spotify_user_id, refresh_token)

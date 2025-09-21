@@ -2,6 +2,12 @@ import axios from "axios"
 import * as React from "react"
 import { Button } from "@/components/ui/button"
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+
+import {
   Card,
   CardAction,
   CardContent,
@@ -23,15 +29,34 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useLocation } from "react-router-dom";
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 export default function CardDemo() {
   const location = useLocation();
   const {img, artistName, spotifyUri, followerCount} = location.state || {};
 
-  const [position, setPosition] = React.useState("all-of")
+  const [position, setPosition] = React.useState("global-sort")
   const [messages, setMessages] = useState<any[]>([]);
   const [isStreaming, setIsStreaming] = useState(false);
+
+  // const initialMessages = [
+  //   "The intricate tapestry of the cosmos reveals itself not only in the grand, sweeping gestures of galaxies colliding but also in the subtle, quantum dance of particles in the void.",
+  //   "Navigating the complex labyrinth of human emotions requires a delicate balance of empathy, self-awareness, and the quiet courage to be vulnerable in a world that often encourages stoicism.",
+  //   "Technological advancement, while offering unprecedented solutions to age-old problems, simultaneously presents new ethical dilemmas that society must carefully consider for a sustainable future.",
+  //   "The ancient forest, with its towering canopies and a symphony of unseen life, stood as a silent, breathing testament to the relentless and beautiful cycle of growth, decay, and rebirth.",
+  //   "Understanding the profound depths of history is essential, as the echoes of past triumphs and follies invariably shape the political, cultural, and social landscapes of the present day."
+  // ];
+
+  // useEffect(() => {
+  //   // Use the setMessages function to update the state
+  //   setMessages(initialMessages);
+  // }, []);
+
+  const tooltip = {
+    "all-of": "Adds all songs from an artist to a playlist, sorted by release date (oldest to newest)",
+    "album-sort": " Sorts songs within each album by popularity (most to least)",
+    "global-sort": "Sort all songs from an artist by popularity (most to least)"
+  }
 
   async function handleClick() {
     console.log(position);
@@ -128,12 +153,27 @@ export default function CardDemo() {
     } finally {
       setIsStreaming(false);
     }
-    // TODO: create backend endpoint to actually call this. 
+    // TODO: create backend endpoint to actually call this.
+
+    
   }
 
   return ( 
-    <div className="flex justify-center">
-      <Card className="w-full max-w-sm mt-5">
+    <div className="flex flex-col items-center space-y-5 mb-5">
+      {/* This is the line that was changed */}
+      <Card>
+        <CardHeader>
+          <CardTitle>The sorting types: </CardTitle>
+        </CardHeader>
+        <CardDescription>
+          {Object.keys(tooltip).map(key => (
+            <div key={key} className="pl-4 pr-4">
+              {key}: {tooltip[key]}
+            </div>
+          ))}
+        </CardDescription>
+      </Card>
+      <Card className="w-[30%] mt-5">
         <img src={img} className="w-full pl-4 pr-4"/>
         <CardHeader>
           <CardTitle>{artistName}</CardTitle>
@@ -145,7 +185,7 @@ export default function CardDemo() {
               <DropdownMenuTrigger asChild>
                 <Button variant="outline">{position}</Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56">
+              <DropdownMenuContent className="w-50">
                 <DropdownMenuLabel>Select Sort Type:</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
@@ -161,15 +201,20 @@ export default function CardDemo() {
           <Button variant="outline" className="w-full" onClick={handleClick}>
             Sort
           </Button>
+        </CardFooter>
+      </Card>
+      {messages.length > 0 && (
+        <Card className="w-[90%]">
           <ul>
             {messages.map((msg, index) => (
-              <li key={index} className="p-1">
-                <pre className="text-sm">{JSON.stringify(msg)}</pre>
+              <li key={index} className="p-2">
+                {/* <p className="text-sm">{msg.data}</p> */}
+                <p className="text-sm">{msg.data}</p>
               </li>
             ))}
           </ul>
-        </CardFooter>
-      </Card>
+        </Card>
+      )}
     </div>
   )
 }

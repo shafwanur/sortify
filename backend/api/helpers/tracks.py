@@ -1,4 +1,5 @@
 import requests
+import json
 
 from . import globalvars
 
@@ -41,4 +42,7 @@ def push_album_tracks(album_id: str, access_token: str):
     response = requests.get(url = url, headers = headers, params = params)
     for item in response.json()['items']:
         p = track_info(track_id = item['id'], access_token=access_token)
+        data = {"data": f"Processing track: {p['track_name']}"}
+        print(data)
+        # yield f"{json.dumps(data)}\n"
         globalvars.song_list.append(p) # TODO

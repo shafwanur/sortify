@@ -53,3 +53,7 @@ async def stream_generator():
 async def test_stream():
     # 2. Use a simple media_type like 'text/plain' or 'application/x-ndjson'.
     return StreamingResponse(stream_generator(), media_type="text/plain")
+
+@router.get("/startup")
+async def startup():
+    return "Backend connected ✅"

@@ -18,13 +18,13 @@ def main(artist_name: str, artist_id: str, arg: str, spotify_user_id: str, acces
     # Create the playlist
     playlist_id = create_playlist(spotify_user_id=spotify_user_id, playlist_name=f"{arg} {artist_name}", access_token=access_token)
 
-    data = {"data": f"Playlist with id {playlist_id} created. Check your Spotify app ;)"}
+    data = {"data": f"Playlist with name {arg} {artist_name} created! Check your Spotify app 😉"}
     yield f"{json.dumps(data)}\n"
 
     # Process all albums of the artist
     yield from process_albums(artist_id=artist_id, access_token=access_token)
 
-    data = {"data": f"Total Song Count: {len(globalvars.song_list)} \nSorted Songs: "}
+    data = {"data": f"Total Song Count of {artist_name}: {len(globalvars.song_list)}\nSorted Songs: "}
     yield f"{json.dumps(data)}\n"
     
     # Sort globalvars.song_list
@@ -37,6 +37,9 @@ def main(artist_name: str, artist_id: str, arg: str, spotify_user_id: str, acces
     for song in globalvars.song_list:
         uris.append(song["uri"])
         print(song)
+        data = {"data": f"{song['track_name'], song['popularity']}"}
+        yield f"{json.dumps(data)}\n"
+
         # file.write(f"{song}\n")
     
     # Actual pushing the songs into the newly created playlist
@@ -48,8 +51,7 @@ def main(artist_name: str, artist_id: str, arg: str, spotify_user_id: str, acces
         i += block_size
     
     # Success
-    data = {"data": f"Success! {len(globalvars.song_list)} unique songs added to the playlist with id {playlist_id}"}
-
+    data = {"data": f"🎉 Success! {len(globalvars.song_list)} unique songs added to the playlist {arg} {artist_name}"}
     yield f"{json.dumps(data)}\n"
 # # manual call: 
 # access_token = "BQBE5SGDBFLosDMyZwv80EodLOH7DyGpIx7kVzz0iJaK2Wjjs2Q16DO0JZsayChjs2Coxm0tmTXhNHoDYYCmGWujLdu4DiRotQW3I5ZSEpmzDidVLETpwYb4Uq63gvxXrKoRdl5y7vHLNnsTLknvTJ9AbnV2EUwA2gieuwiM-mLa0bpiTVaDc8fvG5wY_SQx1H1DvQ85oTswA2htwgQnO4jD_AdHZLJbPnROpn1EJaWTFTECCrOCa3Bm9vACwZAXjRaam4Bae-A7ySUp0pp4b5CKYyRFHP4S0NsKy6cUMnWaYD4JKxJCfLaEF_gdLnkktdxAdTq3AlInOuojLskjtGcjjMmiNZ9jrrgRwCM1ZZo90xf0ncAazT1_J-o"
