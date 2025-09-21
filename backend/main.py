@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
@@ -16,9 +17,11 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
+load_dotenv()
 
+FRONTEND_ENDPOINT = os.getenv("FRONTEND_ENDPOINT")
 origins = [
-    "http://localhost:5173",  # Vite dev server
+    f"{FRONTEND_ENDPOINT}",  # Vite dev server
     "http://127.0.0.1:5173",  # sometimes vite uses 127.0.0.1
 ]
 
