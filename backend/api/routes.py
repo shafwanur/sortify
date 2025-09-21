@@ -55,5 +55,5 @@ async def test_stream():
     return StreamingResponse(stream_generator(), media_type="text/plain")
 
 @router.get("/startup")
-async def startup():
+def startup():
     return "Backend connected ✅"

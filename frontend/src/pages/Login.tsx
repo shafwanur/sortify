@@ -1,3 +1,4 @@
+import axios from "axios"
 import { Flame } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
@@ -5,11 +6,23 @@ import { LoginForm } from "@/components/login-form"
 
 import blob from "@/assets/blob.jpg"
 import spotify from "@/assets/spotify-icon-black.svg"
+import { useEffect } from "react"
 
 export default function LoginPage() {
+  const VITE_BACKEND_API_ENDPOINT = import.meta.env.VITE_BACKEND_API_ENDPOINT;
+
+  useEffect(() => {
+    const response = axios({
+      method: 'get',
+      url: `${VITE_BACKEND_API_ENDPOINT}/api/startup`
+    });
+
+    console.log(response);
+    console.log("Page loaded!");
+  }, []);
+
   function handleClick() {
     console.log("clicked");
-    const VITE_BACKEND_API_ENDPOINT = import.meta.env.VITE_BACKEND_API_ENDPOINT;
     window.location.href = `${VITE_BACKEND_API_ENDPOINT}/auth/login`
   }
 
