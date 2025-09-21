@@ -23,12 +23,15 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useLocation } from "react-router-dom";
+import { useState } from "react"
 
 export default function CardDemo() {
   const location = useLocation();
   const {img, artistName, spotifyUri, followerCount} = location.state || {};
 
   const [position, setPosition] = React.useState("all-of")
+  const [messages, setMessages] = useState<any[]>([]);
+  const [isStreaming, setIsStreaming] = useState(false);
 
   async function handleClick() {
     console.log(position);
@@ -69,24 +72,69 @@ export default function CardDemo() {
       arg: position,
       spotify_user_id: spotify_user_id,
     };
-    const sort_response = await axios.post(
-      `${VITE_BACKEND_API_ENDPOINT}/api/sort`,
-      payload,
-      {
+
+
+    // updated code from here
+    
+
+    if (isStreaming) return;
+
+    setMessages([]);
+    setIsStreaming(true);
+
+    console.log(JSON.stringify(payload));
+    
+    try {
+      const response = await fetch(`${VITE_BACKEND_API_ENDPOINT}/api/sort`, {
+        method: 'POST',
         headers: {
+          "Content-Type": "application/json",
           "access-token": access_token, // raw header key
         },
-      }
-    );
+        body: JSON.stringify(payload),
+      });
 
-    console.log(sort_response);
+      if (!response.ok || !response.body) {
+        throw new Error(`Request failed: ${response.status}`);
+      }
+
+      // 1. Get the stream reader and text decoder
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+
+      // 2. Loop to read chunks from the stream
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        // Add the new chunk to our buffer
+        buffer += decoder.decode(value);
+
+        // 3. Process complete lines (ending in '\n') from the buffer
+        while (buffer.includes('\n')) {
+          const newlineIndex = buffer.indexOf('\n');
+          const line = buffer.substring(0, newlineIndex); // Get the message
+          buffer = buffer.substring(newlineIndex + 1);    // Remove it from buffer
+
+          if (line) { // Ensure the line is not empty
+            const parsedData = JSON.parse(line);
+            setMessages((prev) => [...prev, parsedData]);
+          }
+        }
+      }
+    } catch (error) {
+      console.error("Stream failed:", error);
+    } finally {
+      setIsStreaming(false);
+    }
     // TODO: create backend endpoint to actually call this. 
   }
 
   return ( 
     <div className="flex justify-center">
       <Card className="w-full max-w-sm mt-5">
-          <img src={img} className="w-full pl-4 pr-4"/>
+        <img src={img} className="w-full pl-4 pr-4"/>
         <CardHeader>
           <CardTitle>{artistName}</CardTitle>
           <CardDescription>
@@ -113,6 +161,13 @@ export default function CardDemo() {
           <Button variant="outline" className="w-full" onClick={handleClick}>
             Sort
           </Button>
+          <ul>
+            {messages.map((msg, index) => (
+              <li key={index} className="p-1">
+                <pre className="text-sm">{JSON.stringify(msg)}</pre>
+              </li>
+            ))}
+          </ul>
         </CardFooter>
       </Card>
     </div>

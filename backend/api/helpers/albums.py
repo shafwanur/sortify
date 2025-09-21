@@ -1,3 +1,4 @@
+import json
 import requests 
 
 from .tracks import push_album_tracks
@@ -21,7 +22,11 @@ def process_albums(artist_id: str, access_token: str):
         items = response.json()['items']
         for item in items:
             push_album_tracks(album_id = item['id'], access_token = access_token)
-            print(f"Processed: {item['name']}") # album processed currently
+            
+            data = {"data": f"Processed: {item['name']}"}
+            yield f"{json.dumps(data)}\n"
+            
+            print(data) # album processed currently
     
         url = response.json()['next']
         if type(url) != str:

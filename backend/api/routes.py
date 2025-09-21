@@ -34,13 +34,7 @@ def search_artist(artist_name: str, access_token: str = Header(...)):
 
 @router.post("/sort")
 def call_main(payload: SortRequest, access_token: str = Header(...)):
-    main(artist_name=payload.artist_name, artist_id=payload.artist_id, arg=payload.arg, spotify_user_id=payload.spotify_user_id, access_token=access_token)
-
-    return {
-        "status_code": 200,
-        "msg": "Success in Sorting!"
-    }
-
+    return StreamingResponse(main(artist_name=payload.artist_name, artist_id=payload.artist_id, arg=payload.arg, spotify_user_id=payload.spotify_user_id, access_token=access_token), media_type="text/plain")
 
 async def stream_generator():
     """
