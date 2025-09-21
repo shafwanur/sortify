@@ -1,7 +1,10 @@
 import json
 import requests
+import asyncio
 
 from fastapi import APIRouter, Header
+from fastapi.responses import StreamingResponse
+from fastapi.responses import StreamingResponse
 
 from api.models import (
     ArtistSearchRequest,
@@ -37,3 +40,22 @@ def call_main(payload: SortRequest, access_token: str = Header(...)):
         "status_code": 200,
         "msg": "Success in Sorting!"
     }
+
+
+async def stream_generator():
+    """
+    A simple generator that yields JSON strings, each followed by a newline.
+    """
+    for i in range(10):
+        message_data = {"count": i, "message": f"This is message {i}"}
+        
+        # 1. CRUCIAL: Yield the JSON string followed by a single newline.
+        # This creates a newline-delimited JSON stream (NDJSON).
+        yield f"{json.dumps(message_data)}\n"
+        
+        await asyncio.sleep(0.5) # Non-blocking delay
+
+@router.post("/test")
+async def test_stream():
+    # 2. Use a simple media_type like 'text/plain' or 'application/x-ndjson'.
+    return StreamingResponse(stream_generator(), media_type="text/plain")
