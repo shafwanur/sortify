@@ -10,9 +10,8 @@ from dotenv import load_dotenv
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 
-from db.init import get_session
 from auth.models import User
-from db.models import User
+from spotify.helpers import get_cached_refresh_token
 
 load_dotenv()
 BACKEND_API_ENDPOINT = os.getenv("BACKEND_API_ENDPOINT")
@@ -81,28 +80,5 @@ async def get_current_user(token: str = Depends(oauth2_scheme)) -> User:
     except InvalidTokenError:
         raise credentials_exception
     
-    # retrieve refresh_token from the database
-    async with get_session() as session:
-        user = await session.get(User, spotify_user_id)
-
-        if user is None or user.refresh_token is None: 
-            raise credentials_exception # TODO: change to something more meaningful 
-    
-        return User(spotify_user_id=spotify_user_id, refresh_token=user.refresh_token)
-
-async def db_update(spotify_user_id: str, refresh_token: str):
-    '''
-    Store spotify_user_id and refresh_token in the database, update refresh_token if already exists
-    '''
-    async with get_session() as session:
-        user = await session.get(User, spotify_user_id)
-
-        if user is None: # create new entry
-            new_user = User(spotify_user_id=spotify_user_id, refresh_token=refresh_token)
-            session.add(new_user)
-            await session.commit()
-            return
-
-        # else, update previous entry with the "new" refresh_token on each login
-        user.refresh_token = refresh_token
-        await session.commit()
+    refresh_token = get_cached_refresh_token(spotify_user_id)
+    return User(spotify_user_id=spotify_user_id, refresh_token=refresh_token)

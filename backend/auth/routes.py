@@ -6,14 +6,12 @@ from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse, RedirectResponse
 from fastapi import Depends
 
-from db.init import get_session
 from auth.models import Token, User
 from auth.helpers import (
     get_scopes,
     generate_random_string, 
     get_current_user,
     create_jwt_token,
-    db_update,
 )
 
 from spotify.models import (
@@ -23,7 +21,8 @@ from spotify.models import (
 from spotify.helpers import (
     create_spotify_user_id,
     create_refresh_token,
-    create_access_token
+    create_access_token, 
+    cache_refresh_token
 )
 
 
@@ -63,14 +62,11 @@ async def auth_callback(request: Request) -> Token:
         return JSONResponse({"error": "No auth_code returned"}, status_code=400)
 
     refresh_token = create_refresh_token(auth_code=auth_code)
-    print(f"{refresh_token=}")
     access_token = create_access_token(payload=AccessTokenRequest(refresh_token=refresh_token))
-    print(f"{access_token=}")
     spotify_user_id = create_spotify_user_id(access_token=access_token)
-    print(f"{spotify_user_id=}")
 
-    # Update spotify_user_id and refresh_token in the database.
-    await db_update(spotify_user_id, refresh_token)
+    # cache the refresh_token already
+    cache_refresh_token(spotify_user_id=spotify_user_id, refresh_token=refresh_token)
 
     # send over the spotify_user_id as a jwt token. access_token and refresh_tokens shall be retrieved from a different api call later. 
     jwt_token = create_jwt_token(

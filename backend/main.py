@@ -3,7 +3,6 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
-from db.init import init_db
 
 import auth.routes as auth
 import spotify.routes as spotify
@@ -12,7 +11,6 @@ import api.routes as api
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    await init_db()
     yield
 
 

@@ -16,8 +16,9 @@ REDIRECT_URI = f"{BACKEND_API_ENDPOINT}/auth/success"
 
 
 
-# --- Access Token Caching
+# --- Token Caching
 access_token_cache = {}
+refresh_token_cache = {}
 
 
 def cache_access_token(spotify_user_id: int, access_token: str, expires_in: int = 3600):
@@ -26,6 +27,8 @@ def cache_access_token(spotify_user_id: int, access_token: str, expires_in: int 
         "expires_at": datetime.now(timezone.utc) + timedelta(seconds=expires_in),
     }
 
+def cache_refresh_token(spotify_user_id: int, refresh_token: str):
+    refresh_token_cache[spotify_user_id] = refresh_token
 
 def get_cached_access_token(spotify_user_id: int) -> str | None:
     token_data = access_token_cache.get(spotify_user_id)
@@ -33,9 +36,11 @@ def get_cached_access_token(spotify_user_id: int) -> str | None:
         return token_data["access_token"]
     return None
 
+def get_cached_refresh_token(spotify_user_id: int) -> str: 
+    return refresh_token_cache.get(spotify_user_id)
+
 
 def create_access_token(payload: AccessTokenRequest):
-    print("FUCK: func has been called")
     url = f"{SPOTIFY_ENDPOINT}/api/token"
     data = {
         "grant_type": "refresh_token",
@@ -49,20 +54,11 @@ def create_access_token(payload: AccessTokenRequest):
 
     spotify_user_id = payload.spotify_user_id
     if spotify_user_id is None: 
-        print("FUCK: user id is not there.", access_token)
         spotify_user_id = create_spotify_user_id(access_token=access_token)
 
     cache_access_token(spotify_user_id=spotify_user_id, access_token=access_token)
     return access_token
 
-# def create_spotify_user_id(access_token: str):
-#     print("FUCKK, ", access_token)
-#     url = f"https://api.spotify.com/v1/me"
-#     headers = {"Authorization": "Bearer " + access_token}
-#     response = requests.get(url, headers=headers)  # TODO: add some error handling
-#     print("FUCKK, ", response.json())
-#     spotify_user_id = response.json().get("id")
-#     return spotify_user_id
 
 def create_spotify_user_id(access_token: str):
     # This is the correct Spotify API endpoint for the current user's profile
@@ -101,6 +97,5 @@ def create_refresh_token(auth_code: str):
     cred_b64 = base64.b64encode(cred.encode())
     headers = {"Authorization": f"Basic {cred_b64.decode()}"}
     response = requests.post(url=url, data=data, headers=headers)
-    return response.json().get(
-        "refresh_token"
-    )  # TODO: returns None when it doesn't exist?
+    return response.json().get("refresh_token")  # returns None if it doesnt exist 
+
