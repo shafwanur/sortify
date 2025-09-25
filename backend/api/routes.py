@@ -36,23 +36,23 @@ def search_artist(artist_name: str, access_token: str = Header(...)):
 def call_main(payload: SortRequest, access_token: str = Header(...)):
     return StreamingResponse(main(artist_name=payload.artist_name, artist_id=payload.artist_id, arg=payload.arg, spotify_user_id=payload.spotify_user_id, access_token=access_token), media_type="text/plain")
 
-async def stream_generator():
-    """
-    A simple generator that yields JSON strings, each followed by a newline.
-    """
-    for i in range(10):
-        message_data = {"count": i, "message": f"This is message {i}"}
+# async def stream_generator():
+#     """
+#     A simple generator that yields JSON strings, each followed by a newline.
+#     """
+#     for i in range(10):
+#         message_data = {"count": i, "message": f"This is message {i}"}
         
-        # 1. CRUCIAL: Yield the JSON string followed by a single newline.
-        # This creates a newline-delimited JSON stream (NDJSON).
-        yield f"{json.dumps(message_data)}\n"
+#         # 1. CRUCIAL: Yield the JSON string followed by a single newline.
+#         # This creates a newline-delimited JSON stream (NDJSON).
+#         yield f"{json.dumps(message_data)}\n"
         
-        await asyncio.sleep(0.5) # Non-blocking delay
+#         await asyncio.sleep(0.5) # Non-blocking delay
 
-@router.post("/test")
-async def test_stream():
-    # 2. Use a simple media_type like 'text/plain' or 'application/x-ndjson'.
-    return StreamingResponse(stream_generator(), media_type="text/plain")
+# @router.post("/test")
+# async def test_stream():
+#     # 2. Use a simple media_type like 'text/plain' or 'application/x-ndjson'.
+#     return StreamingResponse(stream_generator(), media_type="text/plain")
 
 @router.get("/startup")
 def startup():

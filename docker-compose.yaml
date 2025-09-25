@@ -12,19 +12,6 @@ services:
       - .env
     volumes:
       - ./backend:/app
-    depends_on:
-      - db
-  
-  db:
-    image: postgres:15
-    environment:
-      POSTGRES_DB: spotify
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-    ports:
-      - "5433:5432"
 
   frontend:
     container_name: frontend

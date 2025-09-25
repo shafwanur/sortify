@@ -18,7 +18,7 @@ def track_info(track_id: str, access_token: str):
     response = requests.get(url = url, headers = headers)
     if response.status_code == 200:
         response = response.json()
-        return { # is this sorted by lenght? yes, shut up. I might have ADHD or just severe brain damage.  
+        return { # is this organised by lenght? yes, shut up. I might have ADHD or just severe brain damage.  
             "uri": response['uri'],
             "track_name": response['name'],
             "popularity": response['popularity'],
@@ -43,6 +43,4 @@ def push_album_tracks(album_id: str, access_token: str):
     for item in response.json()['items']:
         p = track_info(track_id = item['id'], access_token=access_token)
         data = {"data": f"Processing track: {p['track_name']}"}
-        print(data)
-        # yield f"{json.dumps(data)}\n"
-        globalvars.song_list.append(p) # TODO
+        globalvars.song_list.append(p)
