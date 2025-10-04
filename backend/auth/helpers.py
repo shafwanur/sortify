@@ -69,8 +69,9 @@ def create_jwt_token(data: dict):
     return encoded_jwt
 
 
+# Expects token to be passed to the request header like ("Authorization": Bearer Token)
 async def get_current_user(token: str = Depends(oauth2_scheme)) -> User:
-    # Expects token to be passed to the request header like ("Authorization": Bearer Token)
+    "Given a jwt_token, which currently just stores the spotify_user_id, return a tuple of (spotify_user_id, refresh_token)"
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",

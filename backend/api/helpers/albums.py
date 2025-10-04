@@ -2,6 +2,7 @@ import json
 import requests
 
 from .tracks import push_album_tracks
+from globalvars import yield_text
 
 
 def process_albums(artist_id: str, access_token: str):
@@ -23,8 +24,7 @@ def process_albums(artist_id: str, access_token: str):
         for item in items:
             push_album_tracks(album_id=item["id"], access_token=access_token)
 
-            data = {"data": f"Processing album: {item['name']}"}
-            yield f"{json.dumps(data)}\n"
+            yield_text(f"Processing album: {item['name']}")
 
         url = response.json()["next"]
         if type(url) != str:

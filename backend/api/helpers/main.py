@@ -1,10 +1,11 @@
 import os
+import json
+
 from .playlists import create_playlist, add_track_to_playlist
 from .albums import process_albums
 from .sort import sort_songs
+from globalvars import yield_text
 from . import globalvars
-
-import json
 
 
 def main(
@@ -25,18 +26,14 @@ def main(
         access_token=access_token,
     )
 
-    data = {
-        "data": f"Playlist with name {arg} {artist_name} created! Check your Spotify app 😉"
-    }
-    yield f"{json.dumps(data)}\n"
+    yield_text(f"Playlist with name {arg} {artist_name} created!")
 
     # Process all albums of the artist
     yield from process_albums(artist_id=artist_id, access_token=access_token)
 
-    data = {
-        "data": f"Total Song Count of {artist_name}: {len(globalvars.song_list)}\nSorted Songs: "
-    }
-    yield f"{json.dumps(data)}\n"
+    yield_text(
+        f"Total Song Count of {artist_name}: {len(globalvars.song_list)}\nSorted Songs: "
+    )
 
     # Sort globalvars.song_list
     sort_songs(arg=arg)
@@ -48,10 +45,13 @@ def main(
     for song in globalvars.song_list:
         uris.append(song["uri"])
         print(song)
-        data = {"data": f"{song['track_name'], song['popularity']}"}
-        yield f"{json.dumps(data)}\n"
+        yield_text(f"{song['track_name'], song['popularity']}")
 
         # file.write(f"{song}\n")
+
+    # At this point, we have the array of songs.
+    # Theoretically, for another api call, we can send the raw data as is,
+    #   and as Tom suggested, push them to the playlist only when the user asks for it.
 
     # Actual pushing the songs into the newly created playlist
     # TODO: should probably be a function on its own
@@ -66,12 +66,6 @@ def main(
         i += block_size
 
     # Success
-    data = {
-        "data": f"🎉 Success! {len(globalvars.song_list)} unique songs added to the playlist {arg} {artist_name}"
-    }
-    yield f"{json.dumps(data)}\n"
-
-
-# # manual call:
-# access_token = "BQBE5SGDBFLosDMyZwv80EodLOH7DyGpIx7kVzz0iJaK2Wjjs2Q16DO0JZsayChjs2Coxm0tmTXhNHoDYYCmGWujLdu4DiRotQW3I5ZSEpmzDidVLETpwYb4Uq63gvxXrKoRdl5y7vHLNnsTLknvTJ9AbnV2EUwA2gieuwiM-mLa0bpiTVaDc8fvG5wY_SQx1H1DvQ85oTswA2htwgQnO4jD_AdHZLJbPnROpn1EJaWTFTECCrOCa3Bm9vACwZAXjRaam4Bae-A7ySUp0pp4b5CKYyRFHP4S0NsKy6cUMnWaYD4JKxJCfLaEF_gdLnkktdxAdTq3AlInOuojLskjtGcjjMmiNZ9jrrgRwCM1ZZo90xf0ncAazT1_J-o"
-# main("Berq", "0eVixEZVW2PB1UogwTWXc1", "all-of", "31ucvye6x6y7dojbxrokbxf25pwy", access_token)
+    yield_text(
+        f"🎉 Success! {len(globalvars.song_list)} unique songs added to the playlist {arg} {artist_name}"
+    )
