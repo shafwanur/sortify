@@ -21,7 +21,7 @@ class ArtistSearchRequest(BaseModel):
 
 
 class SortRequest(BaseModel):
-    arg: str 
-    artist_id: str 
-    artist_name: str 
+    arg: str
+    artist_id: str
+    artist_name: str
     spotify_user_id: str

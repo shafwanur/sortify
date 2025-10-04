@@ -1,5 +1,6 @@
-import json 
+import json
 import requests
+
 
 def create_playlist(spotify_user_id: str, playlist_name: str, access_token: str):
     """
@@ -21,17 +22,16 @@ def create_playlist(spotify_user_id: str, playlist_name: str, access_token: str)
     playlist_id = response.json()["id"]
     return playlist_id
 
-def add_track_to_playlist(playlist_id: str, uris: list, access_token: str):
-    '''
-    Add tracks (uris) to the specified playlist of playlist_id.
-    '''
 
-    url = f'https://api.spotify.com/v1/playlists/{playlist_id}/tracks'
+def add_track_to_playlist(playlist_id: str, uris: list, access_token: str):
+    """
+    Add tracks (uris) to the specified playlist of playlist_id.
+    """
+
+    url = f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks"
     headers = {
-        'Authorization': f'Bearer {access_token}',
-        'Content-Type': 'application/json'
+        "Authorization": f"Bearer {access_token}",
+        "Content-Type": "application/json",
     }
-    data = json.dumps({
-        'uris': uris
-    })
-    response = requests.post(url = url, headers = headers, data = data)
+    data = json.dumps({"uris": uris})
+    response = requests.post(url=url, headers=headers, data=data)
