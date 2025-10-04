@@ -27,9 +27,11 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
+
 # Some util functions
 def generate_random_string(length: int) -> str:
     return "".join(random.choices(string.ascii_letters + string.digits, k=length))
+
 
 def get_scopes() -> str:
     scopes = [
@@ -59,13 +61,15 @@ def create_jwt_token(data: dict):
     Create a jwt token with {data}
     """
     to_encode = data.copy()
-    expire = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES) # setting a default expiration for all tokens
+    expire = datetime.now(timezone.utc) + timedelta(
+        minutes=ACCESS_TOKEN_EXPIRE_MINUTES
+    )  # setting a default expiration for all tokens
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
 
-async def get_current_user(token: str = Depends(oauth2_scheme)) -> User:  
+async def get_current_user(token: str = Depends(oauth2_scheme)) -> User:
     # Expects token to be passed to the request header like ("Authorization": Bearer Token)
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -79,6 +83,6 @@ async def get_current_user(token: str = Depends(oauth2_scheme)) -> User:
             raise credentials_exception
     except InvalidTokenError:
         raise credentials_exception
-    
+
     refresh_token = get_cached_refresh_token(spotify_user_id)
     return User(spotify_user_id=spotify_user_id, refresh_token=refresh_token)
