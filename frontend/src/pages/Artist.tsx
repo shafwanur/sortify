@@ -45,18 +45,18 @@ export default function ArtistPage() {
             "Sort all songs from an artist by popularity (most to least)",
     };
     
-    // // Mimic API data for initial view, formatted to match the rendering logic
-    // useEffect(() => {
-    //     const initialMessages = [
-    //         { data: "The intricate tapestry of the cosmos reveals itself not only in the grand, sweeping gestures of galaxies colliding but also in the subtle, quantum dance of particles in the void." },
-    //         { data: "Navigating the complex labyrinth of human emotions requires a delicate balance of empathy, self-awareness, and the quiet courage to be vulnerable in a world that often encourages stoicism." },
-    //         { data: "Technological advancement, while offering unprecedented solutions to age-old problems, simultaneously presents new ethical dilemmas that society must carefully consider for a sustainable future." },
-    //     ];
-    //     // Only set initial messages if no streaming has occurred
-    //     if (messages.length === 0) {
-    //         setMessages(initialMessages);
-    //     }
-    // }, []);
+    // Mimic API data for initial view, formatted to match the rendering logic
+    useEffect(() => {
+        const initialMessages = [
+            { data: "The intricate tapestry of the cosmos reveals itself not only in the grand, sweeping gestures of galaxies colliding but also in the subtle, quantum dance of particles in the void." },
+            { data: "Navigating the complex labyrinth of human emotions requires a delicate balance of empathy, self-awareness, and the quiet courage to be vulnerable in a world that often encourages stoicism." },
+            { data: "Technological advancement, while offering unprecedented solutions to age-old problems, simultaneously presents new ethical dilemmas that society must carefully consider for a sustainable future." },
+        ];
+        // Only set initial messages if no streaming has occurred
+        if (messages.length === 0) {
+            setMessages(initialMessages);
+        }
+    }, []);
 
 
     async function handleClick() {
@@ -76,6 +76,8 @@ export default function ArtistPage() {
         });
 
         const spotify_user_id = validate_response.data.spotify_user_id;
+
+        console.log(`debug: ${spotify_user_id}`);
         const access_token_response = await axios.post(
             `${VITE_BACKEND_API_ENDPOINT}/spotify/token/access`,
             {
@@ -85,6 +87,8 @@ export default function ArtistPage() {
         );
 
         const access_token = access_token_response.data.access_token;
+        console.log(`debug: ${access_token}`);
+
         console.log(spotifyUri.split(":").pop());
 
         const payload = {
@@ -112,6 +116,8 @@ export default function ArtistPage() {
             });
 
             if (!response.ok || !response.body) {
+                console.log(`debug: you fucked up.`);
+
                 throw new Error(`Request failed: ${response.status}`);
             }
 
