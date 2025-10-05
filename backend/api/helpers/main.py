@@ -4,7 +4,7 @@ import json
 from .playlists import create_playlist, add_track_to_playlist
 from .albums import process_albums
 from .sort import sort_songs
-from globalvars import yield_text
+from .globalvars import yield_text
 from . import globalvars
 
 
@@ -26,13 +26,13 @@ def main(
         access_token=access_token,
     )
 
-    yield_text(f"Playlist with name {arg} {artist_name} created!")
+    yield from yield_text(f"Playlist with name {arg} {artist_name} created!")
 
     # Process all albums of the artist
     yield from process_albums(artist_id=artist_id, access_token=access_token)
 
-    yield_text(
-        f"Total Song Count of {artist_name}: {len(globalvars.song_list)}\nSorted Songs: "
+    yield from yield_text(
+        f"Total Song Count of {artist_name}: {len(globalvars.song_list)}"
     )
 
     # Sort globalvars.song_list
@@ -45,7 +45,7 @@ def main(
     for song in globalvars.song_list:
         uris.append(song["uri"])
         print(song)
-        yield_text(f"{song['track_name'], song['popularity']}")
+        yield from yield_text(type="table", text=song['track_name'], score=song['popularity'], album=song['album_name'])
 
         # file.write(f"{song}\n")
 
@@ -66,6 +66,6 @@ def main(
         i += block_size
 
     # Success
-    yield_text(
+    yield from yield_text(
         f"🎉 Success! {len(globalvars.song_list)} unique songs added to the playlist {arg} {artist_name}"
     )
