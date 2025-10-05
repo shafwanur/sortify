@@ -45,18 +45,18 @@ export default function ArtistPage() {
             "Sort all songs from an artist by popularity (most to least)",
     };
     
-    // Mimic API data for initial view, formatted to match the rendering logic
-    useEffect(() => {
-        const initialMessages = [
-            { data: "The intricate tapestry of the cosmos reveals itself not only in the grand, sweeping gestures of galaxies colliding but also in the subtle, quantum dance of particles in the void." },
-            { data: "Navigating the complex labyrinth of human emotions requires a delicate balance of empathy, self-awareness, and the quiet courage to be vulnerable in a world that often encourages stoicism." },
-            { data: "Technological advancement, while offering unprecedented solutions to age-old problems, simultaneously presents new ethical dilemmas that society must carefully consider for a sustainable future." },
-        ];
-        // Only set initial messages if no streaming has occurred
-        if (messages.length === 0) {
-            setMessages(initialMessages);
-        }
-    }, []);
+    // // Mimic API data for initial view, formatted to match the rendering logic
+    // useEffect(() => {
+    //     const initialMessages = [
+    //         { data: "The intricate tapestry of the cosmos reveals itself not only in the grand, sweeping gestures of galaxies colliding but also in the subtle, quantum dance of particles in the void." },
+    //         { data: "Navigating the complex labyrinth of human emotions requires a delicate balance of empathy, self-awareness, and the quiet courage to be vulnerable in a world that often encourages stoicism." },
+    //         { data: "Technological advancement, while offering unprecedented solutions to age-old problems, simultaneously presents new ethical dilemmas that society must carefully consider for a sustainable future." },
+    //     ];
+    //     // Only set initial messages if no streaming has occurred
+    //     if (messages.length === 0) {
+    //         setMessages(initialMessages);
+    //     }
+    // }, []);
 
 
     async function handleClick() {
@@ -182,7 +182,7 @@ export default function ArtistPage() {
                         <CardDescription>Monthly Listeners: {followerCount}</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                        <img src={img} className="w-full rounded-md object-cover aspect-video" alt={`Album art for ${artistName}`} />
+                        <img src={img} className="h-full rounded-md mx-auto" alt={`Album art for ${artistName}`} />
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <Button variant="outline" className="w-full justify-between capitalize">
@@ -198,13 +198,13 @@ export default function ArtistPage() {
                                     onValueChange={setPosition}
                                 >
                                     <DropdownMenuRadioItem value="all-of">
-                                        all-of
+                                        All Of
                                     </DropdownMenuRadioItem>
                                     <DropdownMenuRadioItem value="album-sort">
-                                        album-sort
+                                        Album Sort
                                     </DropdownMenuRadioItem>
                                     <DropdownMenuRadioItem value="global-sort">
-                                        global-sort
+                                        Global Sort
                                     </DropdownMenuRadioItem>
                                 </DropdownMenuRadioGroup>
                             </DropdownMenuContent>
@@ -221,7 +221,7 @@ export default function ArtistPage() {
                 {messages.length > 0 && (
                     <Card className="w-full">
                         <CardHeader>
-                           <CardTitle>Console</CardTitle>
+                           <CardTitle className="text-xl">Console</CardTitle>
                         </CardHeader>
                         <CardContent>
                             <ul className="divide-y divide-border">
