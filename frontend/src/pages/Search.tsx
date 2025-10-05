@@ -5,86 +5,95 @@
  */
 import axios from "axios";
 import { useState } from "react";
-import { Input } from "@/components/ui/input"
+import { Input } from "@/components/ui/input";
 import DropdownCard from "@/components/ui/dropdown-card";
 
 export default function Search() {
-  const [response, setResponse] = useState<any>(null); // store API response in state
+	const [response, setResponse] = useState<any>(null); // store API response in state
 
-  async function handleChange(e: any) { // TODO: change type or how this is handled later. 
+	async function handleChange(e: any) {
+		// TODO: change type or how this is handled later.
 
-    await new Promise(resolve => setTimeout(resolve, 1000)); // 5s wait for user to stop typing. stupid solution, i know. give me a break. TODO: fix later.  
-    console.log(e.target.value);
-    const VITE_BACKEND_API_ENDPOINT = import.meta.env.VITE_BACKEND_API_ENDPOINT;
-    const jwt_token = localStorage.getItem("jwt_token");
-    
-    const validate_response = await axios({
-      method: 'get',
-      url: `${VITE_BACKEND_API_ENDPOINT}/auth/validate`,
-      headers: {
-        "Authorization": `Bearer ${jwt_token}`
-      }
-    });
-    
-    const access_token_response = await axios.post(`${VITE_BACKEND_API_ENDPOINT}/spotify/token/access`, {
-        spotify_user_id: validate_response.data.spotify_user_id,
-        refresh_token: validate_response.data.refresh_token
-      }
-    )
-    
-    const access_token = access_token_response.data.access_token;
+		await new Promise((resolve) => setTimeout(resolve, 1000)); // 5s wait for user to stop typing. stupid solution, i know. give me a break. TODO: fix later.
+		console.log(e.target.value);
+		const VITE_BACKEND_API_ENDPOINT = import.meta.env.VITE_BACKEND_API_ENDPOINT;
+		const jwt_token = localStorage.getItem("jwt_token");
 
-    console.log(access_token);
-    console.log({ artist_name: e.target.value });
+		const validate_response = await axios({
+			method: "get",
+			url: `${VITE_BACKEND_API_ENDPOINT}/auth/validate`,
+			headers: {
+				Authorization: `Bearer ${jwt_token}`,
+			},
+		});
 
-    const search_response = await axios({
-      method: 'get',
-      url: `${VITE_BACKEND_API_ENDPOINT}/api/artists`,
-      params: {
-        artist_name: e.target.value
-      },
-      headers: {
-        "access-token": access_token
-      }
-    });
+		const access_token_response = await axios.post(
+			`${VITE_BACKEND_API_ENDPOINT}/spotify/token/access`,
+			{
+				spotify_user_id: validate_response.data.spotify_user_id,
+				refresh_token: validate_response.data.refresh_token,
+			},
+		);
 
-    console.log(search_response);
-    setResponse(search_response.data);
-  }
-  
-  const dropdownList = response?.msg?.artists?.items?.map((item: any) => (
-    <div key={item.id} className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">
-      <DropdownCard 
-        img={item.images[0]?.url}
-        artistName={item.name} 
-        spotifyUri={item.uri}
-        followerCount={item.followers.total}
-      />
-    </div>
-  ));
+		const access_token = access_token_response.data.access_token;
 
-  console.log("log", dropdownList);
+		console.log(access_token);
+		console.log({ artist_name: e.target.value });
 
-  return (
-    <div className="flex justify-center mt-5">
-      <div className="relative w-[500px]">
-        <Input
-          type="search"
-          placeholder="Search..."
-          className="pr-10 rounded-md border border-gray-300 py-2 pl-4 focus:border-primary focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
-          onChange={handleChange}
-        />
-        {/* Dropdown goes here */}
-        {
-        dropdownList ? (
-        <div className="absolute left-0 right-0 mt-2 max-h-[300px] overflow-y-auto rounded-md border border-gray-300 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800">
-          <div className="py-2">
-            {dropdownList}
-          </div>
-        </div>
-        ) : <></>
-        }
-      </div>
-    </div>
-  )
+		const search_response = await axios({
+			method: "get",
+			url: `${VITE_BACKEND_API_ENDPOINT}/api/artists`,
+			params: {
+				artist_name: e.target.value,
+			},
+			headers: {
+				"access-token": access_token,
+			},
+		});
+
+		console.log(search_response);
+		setResponse(search_response.data);
+	}
+
+	const dropdownList = response?.msg?.artists?.items?.map((item: any) => (
+		<div
+			key={item.id}
+			className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+		>
+			<DropdownCard
+				img={item.images[0]?.url}
+				artistName={item.name}
+				spotifyUri={item.uri}
+				followerCount={item.followers.total}
+			/>
+		</div>
+	));
+
+	console.log("log", dropdownList);
+
+	return (
+		// The outermost container now controls the side padding for responsiveness
+		<div className="mt-5 px-4 sm:px-6 lg:px-8">
+			{/* The parent container is now just a relative anchor, allowing its children to define the width */}
+			<div className="relative">
+				<Input
+					type="search"
+					placeholder="Search for an artist"
+					className="w-full pr-10 rounded-md border border-gray-300 py-2 pl-4 focus:border-primary focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+					onChange={handleChange}
+				/>
+				{/* Dropdown goes here */}
+				{dropdownList ? (
+					<div
+						// This now matches the parent's width and has a responsive max-height
+						className="absolute left-0 right-0 mt-2 max-h-[90vh] overflow-y-auto rounded-md border border-gray-300 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800"
+					>
+						<div className="py-2">{dropdownList}</div>
+					</div>
+				) : (
+					<></>
+				)}
+			</div>
+		</div>
+	);
 }
