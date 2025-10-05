@@ -21,6 +21,15 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
 
 export default function ArtistPage() {
     const location = useLocation();
@@ -33,8 +42,12 @@ export default function ArtistPage() {
     };
 
     const [position, setPosition] = useState("global-sort");
-    const [messages, setMessages] = useState([]);
     const [isStreaming, setIsStreaming] = useState(false);
+
+    // State for different types of streamed data
+    const [consoleMessages, setConsoleMessages] = useState([]);
+    const [albums, setAlbums] = useState([]);
+    const [songMetrics, setSongMetrics] = useState([]);
 
     const tooltip = {
         "all-of":
@@ -45,26 +58,11 @@ export default function ArtistPage() {
             "Sort all songs from an artist by popularity (most to least)",
     };
     
-    // Mimic API data for initial view, formatted to match the rendering logic
-    useEffect(() => {
-        const initialMessages = [
-            { data: "The intricate tapestry of the cosmos reveals itself not only in the grand, sweeping gestures of galaxies colliding but also in the subtle, quantum dance of particles in the void." },
-            { data: "Navigating the complex labyrinth of human emotions requires a delicate balance of empathy, self-awareness, and the quiet courage to be vulnerable in a world that often encourages stoicism." },
-            { data: "Technological advancement, while offering unprecedented solutions to age-old problems, simultaneously presents new ethical dilemmas that society must carefully consider for a sustainable future." },
-        ];
-        // Only set initial messages if no streaming has occurred
-        if (messages.length === 0) {
-            setMessages(initialMessages);
-        }
-    }, []);
-
-
     async function handleClick() {
         console.log(`position: ${position}`);
 
         const jwt_token = localStorage.getItem("jwt_token");
         
-        // This should be replaced by your actual environment variable handling
         const VITE_BACKEND_API_ENDPOINT = import.meta.env.VITE_BACKEND_API_ENDPOINT || "http://localhost:8000";
 
         const validate_response = await axios({
@@ -76,8 +74,6 @@ export default function ArtistPage() {
         });
 
         const spotify_user_id = validate_response.data.spotify_user_id;
-
-        console.log(`debug: ${spotify_user_id}`);
         const access_token_response = await axios.post(
             `${VITE_BACKEND_API_ENDPOINT}/spotify/token/access`,
             {
@@ -87,10 +83,6 @@ export default function ArtistPage() {
         );
 
         const access_token = access_token_response.data.access_token;
-        console.log(`debug: ${access_token}`);
-
-        console.log(spotifyUri.split(":").pop());
-
         const payload = {
             artist_name: artistName,
             artist_id: spotifyUri.split(":").pop(),
@@ -100,7 +92,10 @@ export default function ArtistPage() {
 
         if (isStreaming) return;
 
-        setMessages([]);
+        // Clear previous results and set streaming state
+        setConsoleMessages([]);
+        setAlbums([]);
+        setSongMetrics([]);
         setIsStreaming(true);
 
         console.log(JSON.stringify(payload));
@@ -116,8 +111,6 @@ export default function ArtistPage() {
             });
 
             if (!response.ok || !response.body) {
-                console.log(`debug: you fucked up.`);
-
                 throw new Error(`Request failed: ${response.status}`);
             }
 
@@ -138,13 +131,22 @@ export default function ArtistPage() {
 
                     if (line) {
                         const parsedData = JSON.parse(line);
-                        setMessages((prev) => [...prev, parsedData]);
+                        
+                        // Sort incoming data based on its type
+                        if (parsedData.type === 'text') {
+                            setConsoleMessages((prev) => [...prev, parsedData]);
+                        } else if (parsedData.type === 'img') {
+                            console.log(parsedData.type, parsedData.img, parsedData.img.url);
+                            setAlbums((prev) => [...prev, parsedData]);
+                        } else if (parsedData.type === 'table') {
+                            setSongMetrics((prev) => [...prev, parsedData]);
+                        }
                     }
                 }
             }
         } catch (error) {
             console.error("Stream failed:", error);
-            setMessages([{ data: `An error occurred: ${error.message}` }]);
+            setConsoleMessages([{ text: `An error occurred: ${error.message}` }]);
         } finally {
             setIsStreaming(false);
         }
@@ -185,15 +187,15 @@ export default function ArtistPage() {
                 <Card className="w-full">
                     <CardHeader>
                         <CardTitle>{artistName}</CardTitle>
-                        <CardDescription>Monthly Listeners: {followerCount}</CardDescription>
+                        <CardDescription>Followers: {followerCount}</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                        <img src={img} className="h-full rounded-md mx-auto" alt={`Album art for ${artistName}`} />
+                        <img src={img} className="h-full rounded-md mx-auto" alt={`Promotional image for ${artistName}`} />
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <Button variant="outline" className="w-full justify-between capitalize">
                                     {position.replace('-', ' ')}
-                                    <svg xmlns="http://www.w.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="ml-2 h-4 w-4 shrink-0 opacity-50"><path d="m6 9 6 6 6-6"></path></svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="ml-2 h-4 w-4 shrink-0 opacity-50"><path d="m6 9 6 6 6-6"></path></svg>
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent className="w-[--radix-dropdown-menu-trigger-width]">
@@ -223,25 +225,90 @@ export default function ArtistPage() {
                     </CardFooter>
                 </Card>
 
-                {/* Card 3: Messages */}
-                {messages.length > 0 && (
+                {/* Card for Albums (type: img) */}
+                {albums.length > 0 && (
                     <Card className="w-full">
                         <CardHeader>
-                           <CardTitle className="text-xl">Console</CardTitle>
+                            <CardTitle className="text-xl">Albums Found</CardTitle>
+                            <CardDescription>
+                                Albums retrieved for sorting.
+                            </CardDescription>
                         </CardHeader>
                         <CardContent>
                             <ul className="divide-y divide-border">
-                                {messages.map((msg, index) => (
-                                    <li key={index} className="py-3">
-                                        <p className="text-sm text-muted-foreground">{msg.data}</p>
+                                {albums.map((album) => (
+                                    <li key={album.text} className="flex items-center py-4">
+                                        <img
+                                            src={album.img.url}
+                                            alt={`Album cover for ${album.text}`}
+                                            className="h-24 w-24 rounded-md object-cover"
+                                        />
+                                        <div className="ml-4">
+                                            <p className="text-md font-medium leading-none">
+                                                {album.text}
+                                            </p>
+                                            <p className="text-sm text-muted-foreground mt-1">
+                                                Total Song Count: {album.score}
+                                            </p>
+                                        </div>
                                     </li>
                                 ))}
                             </ul>
                         </CardContent>
                     </Card>
                 )}
+
+                {/* Card for Song Metrics Table (type: table) */}
+                {songMetrics.length > 0 && (
+                    <Card className="w-full">
+                        <CardHeader>
+                            <CardTitle className="text-xl">Song Metrics</CardTitle>
+                            <CardDescription>
+                                An overview of track performance scores.
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <Table>
+                                <TableHeader>
+                                    <TableRow>
+                                        <TableHead className="w-[40%]">Song Name</TableHead>
+                                        <TableHead>Album Name</TableHead>
+                                        <TableHead className="text-right">Score</TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                    {songMetrics.map((song) => (
+                                        <TableRow key={song.text}>
+                                            <TableCell className="font-medium">{song.text}</TableCell>
+                                            <TableCell>{song.album}</TableCell>
+                                            <TableCell className="text-right">{song.score}</TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </CardContent>
+                    </Card>
+                )}
+                
+                {/* Card for Console Output (type: text) */}
+                {consoleMessages.length > 0 && (
+                    <Card className="w-full">
+                        <CardHeader>
+                           <CardTitle className="text-xl">Console</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <ul className="space-y-2 text-sm text-muted-foreground">
+                                {consoleMessages.map((msg, index) => (
+                                    <li key={index} className="font-mono">
+                                        <span className="text-primary mr-2">&gt;</span>{msg.text}
+                                    </li>
+                                ))}
+                            </ul>
+                        </CardContent>
+                    </Card>
+                )}
+
             </div>
         </div>
     );
 }
-
