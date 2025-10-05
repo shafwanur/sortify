@@ -72,17 +72,22 @@ export default function Search() {
 	console.log("log", dropdownList);
 
 	return (
-		<div className="flex justify-center mt-5">
-			<div className="relative w-[500px]">
+		// The outermost container now controls the side padding for responsiveness
+		<div className="mt-5 px-4 sm:px-6 lg:px-8">
+			{/* The parent container is now just a relative anchor, allowing its children to define the width */}
+			<div className="relative">
 				<Input
 					type="search"
-					placeholder="Search..."
-					className="pr-10 rounded-md border border-gray-300 py-2 pl-4 focus:border-primary focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+					placeholder="Search for an artist"
+					className="w-full pr-10 rounded-md border border-gray-300 py-2 pl-4 focus:border-primary focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
 					onChange={handleChange}
 				/>
 				{/* Dropdown goes here */}
 				{dropdownList ? (
-					<div className="absolute left-0 right-0 mt-2 max-h-[300px] overflow-y-auto rounded-md border border-gray-300 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800">
+					<div
+						// This now matches the parent's width and has a responsive max-height
+						className="absolute left-0 right-0 mt-2 max-h-[90vh] overflow-y-auto rounded-md border border-gray-300 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800"
+					>
 						<div className="py-2">{dropdownList}</div>
 					</div>
 				) : (
